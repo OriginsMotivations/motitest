@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motiveishon - Juego de Motivación</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .header img {
+            width: 80px;
+            height: 80px;
+            margin-right: 10px;
+        }
+
+        .question-container {
+            margin-top: 20px;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="originsmotivations.png" alt="Logo">
+            <h4>OM2024</h4>
+        </div>
+        <h3>Motiveishon - Test de Motivación</h3>
+        <div id="question-container" class="question-container card-panel">
+            <h5 id="question">Pregunta</h5>
+            <div class="input-field">
+                <p>
+                    <label>
+                        <input name="option" type="radio" value="0" />
+                        <span id="option0">Opción 1</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="option" type="radio" value="1" />
+                        <span id="option1">Opción 2</span>
+                    </label>
+                </p>
+                <p>
+                    <label>
+                        <input name="option" type="radio" value="2" />
+                        <span id="option2">Opción 3</span>
+                    </label>
+                </p>
+            </div>
+            <button id="next-btn" class="btn waves-effect waves-light">Siguiente</button>
+        </div>
+
+        <div id="result-container" class="hidden">
+            <h4>¡Resultados!</h4>
+            <p>Has acertado <span id="score">0</span> de <span id="total-questions">0</span> preguntas.</p>
+            <button id="restart-btn" class="btn waves-effect waves-light">Reiniciar</button>
+        </div>
+    </div>
+
+    <script>
+        const allQuestions = [
+            {
+                question: "¿Qué es la motivación intrínseca?",
+                options: ["Motivación por recompensas externas", "Motivación por satisfacción personal", "Motivación por la presión social"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es una técnica efectiva para mantenerse motivado?",
+                options: ["Procrastinar", "Establecer metas realistas", "Evitar la planificación"],
+                correct: 1
+            },
+            {
+                question: "¿Qué efecto tiene el pensamiento positivo en la motivación?",
+                options: ["Reduce la productividad", "Aumenta la motivación", "No tiene ningún efecto"],
+                correct: 1
+            },
+            {
+                question: "¿Qué significa la automotivación?",
+                options: ["Esperar motivación de otros", "Ser capaz de motivarse a sí mismo", "Motivar a otras personas"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es un buen ejemplo de motivación extrínseca?",
+                options: ["Hacer ejercicio para sentirse bien", "Estudiar para recibir una beca", "Leer porque disfrutas el tema"],
+                correct: 1
+            },
+            {
+                question: "¿Qué puede ayudar a mantener una actitud motivada?",
+                options: ["Dormir lo menos posible", "Establecer objetivos claros", "No preocuparse por los errores"],
+                correct: 1
+            },
+            {
+                question: "¿Qué se recomienda para superar los momentos de desmotivación?",
+                options: ["Ignorar los problemas", "Hacer ejercicio", "Evitar la comunicación"],
+                correct: 1
+            },
+            {
+                question: "¿Qué papel juega el apoyo social en la motivación?",
+                options: ["Es irrelevante", "Puede aumentar la motivación", "Disminuye la motivación"],
+                correct: 1
+            },
+            {
+                question: "¿Qué significa tener un propósito en la vida?",
+                options: ["No preocuparse por nada", "Tener objetivos a largo plazo", "Vivir sin reglas"],
+                correct: 1
+            },
+            {
+                question: "¿Cómo se define la autorregulación?",
+                options: ["Capacidad de motivarse a uno mismo", "Establecer objetivos claros", "Controlar el propio comportamiento"],
+                correct: 2
+            },
+            {
+                question: "¿Qué actitud puede disminuir la motivación?",
+                options: ["Pensar en el fracaso", "Establecer metas", "Buscar apoyo"],
+                correct: 0
+            },
+            {
+                question: "¿Por qué es importante establecer metas alcanzables?",
+                options: ["Para garantizar el éxito", "Para evitar el fracaso", "Para mantener la motivación"],
+                correct: 2
+            },
+            {
+                question: "¿Qué es una mentalidad de crecimiento?",
+                options: ["Creer que las habilidades se pueden desarrollar", "Creer que las habilidades son fijas", "Evitar desafíos"],
+                correct: 0
+            },
+            {
+                question: "¿Qué es la resiliencia?",
+                options: ["Ser capaz de adaptarse ante la adversidad", "Evitar los problemas", "Nunca cometer errores"],
+                correct: 0
+            },
+            {
+                question: "¿Cuál de las siguientes afirmaciones es falsa?",
+                options: ["La motivación siempre es constante", "La motivación puede variar", "La motivación necesita ser renovada"],
+                correct: 0
+            },
+            {
+                question: "¿Qué actitud promueve la motivación?",
+                options: ["Evitar desafíos", "Buscar oportunidades", "Culpar a otros"],
+                correct: 1
+            },
+            {
+                question: "¿Qué influencia tiene el entorno en la motivación?",
+                options: ["No tiene ninguna", "Puede motivar o desmotivar", "Siempre desmotiva"],
+                correct: 1
+            },
+            {
+                question: "¿Cuál es la mejor forma de medir el progreso?",
+                options: ["Ignorar los resultados", "Compararse con otros", "Evaluar objetivos personales"],
+                correct: 2
+            },
+            {
+                question: "¿Qué puede generar la procrastinación?",
+                options: ["Mayor motivación", "Estrés y ansiedad", "Satisfacción inmediata"],
+                correct: 1
+            },
+            {
+                question: "¿Por qué es importante la automotivación?",
+                options: ["Para depender de otros", "Para lograr objetivos personales", "Para evitar responsabilidades"],
+                correct: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedQuestions = [];
+
+        function selectRandomQuestions() {
+            const shuffledQuestions = allQuestions.sort(() => Math.random() - 0.5);
+            selectedQuestions = shuffledQuestions.slice(0, 3);
+        }
+
+        const questionElement = document.getElementById('question');
+        const optionsElements = [
+            document.getElementById('option0'),
+            document.getElementById('option1'),
+            document.getElementById('option2')
+        ];
+        const questionContainer = document.getElementById('question-container');
+        const resultContainer = document.getElementById('result-container');
+        const scoreElement = document.getElementById('score');
+        const totalQuestionsElement = document.getElementById('total-questions');
+        const nextButton = document.getElementById('next-btn');
+        const restartButton = document.getElementById('restart-btn');
+
+        function showQuestion() {
+            const currentQuestion = selectedQuestions[currentQuestionIndex];
+            questionElement.textContent = currentQuestion.question;
+            optionsElements.forEach((element, index) => {
+                element.textContent = currentQuestion.options[index];
+            });
+        }
+
+        function showResult() {
+            questionContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            scoreElement.textContent = score;
+            totalQuestionsElement.textContent = selectedQuestions.length;
+        }
+
+        function restartGame() {
+            currentQuestionIndex = 0;
+            score = 0;
+            selectRandomQuestions();
+            resultContainer.classList.add('hidden');
+            questionContainer.classList.remove('hidden');
+            showQuestion();
+        }
+
+        nextButton.addEventListener('click', () => {
+            const selectedOption = document.querySelector('input[name="option"]:checked');
+            if (selectedOption) {
+                const answer = parseInt(selectedOption.value);
+                if (answer === selectedQuestions[currentQuestionIndex].correct) {
+                    score++;
+                }
+                selectedOption.checked = false;
+                currentQuestionIndex++;
+                if (currentQuestionIndex < selectedQuestions.length) {
+                    showQuestion();
+                } else {
+                    showResult();
+                }
+            } else {
+                alert("Por favor, selecciona una respuesta.");
+            }
+        });
+
+        restartButton.addEventListener('click', restartGame);
+
+        selectRandomQuestions();
+        showQuestion();
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+
+</html>
