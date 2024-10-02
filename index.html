@@ -49,10 +49,10 @@
 <body>
     <div class="container">
         <div class="header">
-            <img src="originsmotivations.png" alt="Logo">
+            <img src="https://via.placeholder.com/80" alt="Logo">
             <h4>OM2024</h4>
         </div>
-        <h4>Test de Motivación</h4>
+        <h3>Motiveishon - Test de Motivación</h3>
         <div id="question-container" class="question-container card-panel">
             <h5 id="question">Pregunta</h5>
             <div class="input-field">
@@ -81,6 +81,7 @@
         <div id="result-container" class="hidden">
             <h4>¡Resultados!</h4>
             <p>Has acertado <span id="score">0</span> de <span id="total-questions">0</span> preguntas.</p>
+            <p id="result-message"></p>
             <button id="restart-btn" class="btn waves-effect waves-light">Reiniciar</button>
         </div>
     </div>
@@ -208,6 +209,7 @@
         const resultContainer = document.getElementById('result-container');
         const scoreElement = document.getElementById('score');
         const totalQuestionsElement = document.getElementById('total-questions');
+        const resultMessageElement = document.getElementById('result-message');
         const nextButton = document.getElementById('next-btn');
         const restartButton = document.getElementById('restart-btn');
 
@@ -224,6 +226,17 @@
             resultContainer.classList.remove('hidden');
             scoreElement.textContent = score;
             totalQuestionsElement.textContent = selectedQuestions.length;
+
+            // Mostrar el mensaje según la puntuación
+            let resultMessage = "";
+            if (score === 1) {
+                resultMessage = "Estas en el camino";
+            } else if (score === 2) {
+                resultMessage = "Casi lo completas";
+            } else if (score === 3) {
+                resultMessage = "Enhorabuena Motivado total¡¡¡¡";
+            }
+            resultMessageElement.textContent = resultMessage;
         }
 
         function restartGame() {
